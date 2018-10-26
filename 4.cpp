@@ -1,79 +1,66 @@
-#include<iostream>
+#include <iostream>
 using namespace std;
-
-//function to merge
-int* merge(int arr1[], int x1, int arr2[], int x2){
-	
-	int arr[x1+x2];
-	//store elements of the first array
-	for(int i=0;i<x1;i++){
-		arr[i]=arr1[i];
+//required libraries included
+int* merge(int a1[],int a2[],int s1,int s2,int& size3)//function to merge the elements of the two arrays
+{
+	size3=0;
+	int arr[s1+s2];//a new array is created 
+	for(int i=0;i<s1;i++)//loop to store the elements of the first array
+	arr[size3++]=a1[i];
+	int j;
+	for(int i=0;i<s2;i++)//loop to store the elements of the second array
+	{
+		for(j=0;j<s1;j++)
+		if(a1[j]==a2[i])//if it is not equal to an element of the first array
+		break;
+		if(j==s1)
+		arr[size3++]=a2[i];
 	}
-	//store elements of the second array
-	for(int i=x1;i<(x1+x2);i++){
-		arr[i]=arr2[i-x1];
-	}
-	return arr;
-
+	return arr;//the merged array formed is returned
+}	
+int findMax(int a[],int s)//function to find the maximum of the merged array
+{
+	int max=a[0];
+	for(int i=1;i<s;i++)
+	if(a[i]>max)
+	max=a[i];//maximum found
+	return max;//maximum returned
 }
-
-//function for largest
-int largest(int arr[], int x){
-	
-	int max = arr[0];
-	for(int i=0; i<x; i++){
-		if(max < arr[i])
-		max = arr[i];
-	}
-	return max;
-}
-
-//function for smallest
-int smallest(int arr[], int x){
-	int min = arr[0];
-	for(int i=0; i<x; i++){
-		if(min>arr[i])
-		min = arr[i];	
-	}
-	return min;
-}
-
-int main(){
-
-	int s1=0;
-	//input for size of 1st array
-	cout << "Enter the size of your first array :" << endl;
-	cin >> s1;	
-	//define 1st array
-	int Array1[s1];
-	//take elements
-	cout << "Enter the elements :" << endl;
-	for(int a=0;a<s1;a++){
-		cin >> Array1[a];
-	}
-	int s2=0;
-	//input for size of 2nd array
-	cout << "Enter the size of your second array :" << endl;
-	cin >> s2;
-	//define 2nd array
-	int Array2[s2];
-	//take elements
-	cout << "Enter the elements :" << endl;
-	for(int a=0;a<s2;a++){
-		cin >> Array2[a];
-	}
-
-	//define the merged array
-	int Array3[s1+s2];
-	//call merge function to put all the elements in the merged array
-	int* p = merge(Array1,s1,Array2,s2);
-	for (int i=0;i<(s1+s2);i++){
-		Array3[i]=*(p+i);  
-	}
-	
-	//print results by calling function for max and min 
-	cout << "The largest element in the merged array is : " << largest(Array3,s1+s2) << endl;
-	cout << "The smallest element in the merged array is : " << smallest(Array3,s1+s2) << endl;
-
+int findMin(int a[],int s,int max)//function to find the minimum of the merged array
+{
+	int min=max;
+	for(int i=0;i<s;i++)
+	if(a[i]<min)
+	min=a[i];//minimum found
+	return min;//minimum returned
+}		
+int main()//main function declared
+{
+	int size1=0;
+	cout<<"Enter the size of the first array."<<endl;
+	cin>>size1;
+	int a1[size1];
+	cout<<"Enter the elements of the first array."<<endl;
+	for(int i=0;i<size1;i++)
+	cin>>a1[i];//elements of the first array inputted
+	int size2=0;
+	cout<<"Enter the size of the second array."<<endl;
+	cin>>size2;
+	int a2[size2];
+	cout<<"Enter the elements of the second array."<<endl;
+	for(int i=0;i<size2;i++)
+	cin>>a2[i];//elements of the second array inputted
+	int size3=size1+size2;
+        int arr[size3];
+	int* mergedArr=merge(a1,a2,size1,size2,size3);//pointer to the merge array returned in stored
+	for(int i=0;i<size3;i++)
+	*(arr+i)=*(mergedArr+i);//that pointer is used to form the third merged array
+	cout<<"The merged array is >>"<<endl;
+	for(int i=0;i<size3;i++)
+	cout<<arr[i]<<",";//merged array is printed
+	cout<<endl;
+	int max=findMax(arr,size3);//maximum found
+	cout<<"The maximum element of the combined array is "<<max<<endl;//and printed
+	cout<<"the minimum element of the combined array is "<<findMin(arr,size3,max)<<endl;//minimum found and printed
 	return 0;
 }
